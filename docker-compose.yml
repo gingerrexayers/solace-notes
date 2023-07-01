@@ -1,0 +1,45 @@
+services:
+  frontend:
+    container_name: solace-notes-frontend
+    depends_on:
+      - backend
+    build:
+      context: ./notes-frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./notes-frontend/.env
+    volumes:
+      - ./notes-frontend/src:/app/src
+      - ./notes-frontend/public:/app/public
+    restart: always
+    ports:
+      - 3001:3000
+  backend:
+    container_name: solace-notes-backend
+    depends_on:
+      - database
+    build:
+      dockerfile: ./Dockerfile
+      context: ./notes-backend
+      target: development
+    ports:
+      - 3000:3000
+    volumes:
+      - ./notes-backend:/usr/src/app
+    env_file:
+      - ./notes-backend/.env
+    command: npm run start:dev
+  database:
+    container_name: solace-notes-database
+    image: postgres:15.3
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=dev
+      - POSTGRES_PASSWORD=dev
+      - POSTGRES_DB=notes
+
+volumes:
+  postgres-volume:
