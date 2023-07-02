@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { NoteResponseDto } from "./dto/NoteResponse.dto";
 
 interface EditState {
