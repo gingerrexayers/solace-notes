@@ -5,7 +5,7 @@ import { NotesListComponent } from "./Notes/NotesListComponent";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App bg-white dark:bg-slate-900 w-full h-screen">
       <AddNotesComponent></AddNotesComponent>
       <NotesListComponent></NotesListComponent>
     </div>

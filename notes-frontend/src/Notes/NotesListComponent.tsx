@@ -4,12 +4,13 @@ import { observe } from "mobx";
 import { observer } from "mobx-react-lite";
 import { NotesListPresenter } from "./NotesListPresenter";
 import { NoteResponseDto } from "./dto/NoteResponse.dto";
+import { NoteComponent } from "./NoteComponent";
 
 export const NotesListComponent = observer((props) => {
+  let notesListPresenter = new NotesListPresenter();
   const [shadowViewModel, setViewModel] = useState<NoteResponseDto[]>([]);
 
   useEffect(() => {
-    let notesListPresenter = new NotesListPresenter();
     async function load() {
       observe(
         notesListPresenter,
@@ -22,15 +23,22 @@ export const NotesListComponent = observer((props) => {
       await notesListPresenter.load();
     }
     load();
-  }, []);
+  }, [notesListPresenter]);
 
   return (
     <>
       <div>
         <h5 className="note-list-title">Notes</h5>
-        <div>
+        <div className="flex flex-wrap w-full justify-around">
           {shadowViewModel.map((note, i) => {
-            return <div key={i}>{note.note}</div>;
+            return (
+              <NoteComponent
+                note={note}
+                submitChanges={async (id, note) =>
+                  await notesListPresenter.submitChanges(id, note)
+                }
+              />
+            );
           })}
         </div>
       </div>

@@ -3,9 +3,9 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { CreateNoteDto } from './dto/CreateNote.dto';
 import { NotesService } from './notes.service';
@@ -28,14 +28,14 @@ export class NotesController {
 
   @Patch('/:id')
   updateNote(
-    @Query('id') id: string,
+    @Param('id') id: string,
     @Body() dto: UpdateNoteDto,
   ): Promise<SuccessResponse> {
     return this.notesService.update(id, dto);
   }
 
   @Delete('/:id')
-  deleteNote(@Query('id') id: string): Promise<SuccessResponse> {
+  deleteNote(@Param('id') id: string): Promise<SuccessResponse> {
     return this.notesService.remove(id);
   }
 }

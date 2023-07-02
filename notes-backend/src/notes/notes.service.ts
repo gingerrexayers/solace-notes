@@ -28,6 +28,7 @@ export class NotesService {
   }
 
   async update(id: string, dto: UpdateNoteDto): Promise<SuccessResponse> {
+    console.log(id, dto);
     const updateResult = await this.notesRepository.update(id, dto);
     if (updateResult.affected) {
       return { success: true };

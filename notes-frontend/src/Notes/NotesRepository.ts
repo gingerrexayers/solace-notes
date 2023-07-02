@@ -2,9 +2,11 @@ import { observable, makeObservable } from "mobx";
 import { AddNoteDto } from "./dto/AddNote.dto";
 import { HttpGateway } from "../Core/HttpGateway";
 import { NoteResponseDto } from "./dto/NoteResponse.dto";
+import { UpdateNoteDto } from "./dto/UpdateNote.dto";
+import { SuccessResponse } from "./dto/SuccessResponse.dto";
 
 export class NotesRepository {
-  notesPm = [];
+  notesPm: NoteResponseDto[] = [];
   httpGateway = new HttpGateway();
 
   constructor() {
@@ -26,11 +28,38 @@ export class NotesRepository {
     await this.loadApiData();
   };
 
+  updateNote = async (dto: UpdateNoteDto): Promise<SuccessResponse> => {
+    const result = await this.httpGateway.patch(
+      "http://localhost:3000/notes/" + dto.id,
+      dto
+    );
+    if (result.success) {
+      this.notesPm = this.notesPm.map((note) =>
+        note.id === dto.id ? { ...note, note: dto.note } : note
+      );
+    }
+    return result;
+  };
+
+  deleteNote = async (id: string): Promise<SuccessResponse> => {
+    const result = await this.httpGateway.delete(
+      "http://localhost:3000/notes/" + id
+    );
+    if (result.success) {
+      this.notesPm = this.notesPm.filter((note) => note.id !== id);
+    }
+    return result;
+  };
+
   loadApiData = async () => {
     const response = await this.httpGateway.get("http://localhost:3000/notes");
     console.log(response);
     this.notesPm = response.map((note: NoteResponseDto) => {
-      return note;
+      return {
+        ...note,
+        createdAt: new Date(note.createdAt),
+        updatedAt: new Date(note.updatedAt),
+      };
     });
   };
 

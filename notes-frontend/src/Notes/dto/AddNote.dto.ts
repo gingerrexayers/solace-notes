@@ -1,3 +1,3 @@
-export type AddNoteDto = {
+export interface AddNoteDto {
   note: string;
-};
+}
