@@ -27,8 +27,7 @@ export const NotesListComponent = observer((props) => {
 
   return (
     <>
-      <div>
-        <h5 className="note-list-title">Notes</h5>
+      <div className="mb-10">
         <div className="flex flex-wrap w-full justify-around">
           {shadowViewModel.map((note, i) => {
             return (

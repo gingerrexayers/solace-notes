@@ -87,7 +87,7 @@ export const NoteComponent = (props: {
           }
         ></textarea>
       ) : (
-        <p className="text-left mx-2 mt-2 p-1 text-sm text-gray-600 dark:text-gray-200">
+        <p className="text-left max-w-sm mx-2 mt-2 p-1 text-sm text-gray-600 dark:text-gray-200 break-words">
           {props.note.note}
         </p>
       )}
