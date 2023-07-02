@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { NoteEntity } from './note.entity';
 import { CreateNoteDto } from './dto/CreateNote.dto';
+import { UpdateNoteDto } from './dto/UpdateNote.dto';
+import { SuccessResponse } from './dto/SuccessResponse.type';
 
 @Injectable()
 export class NotesService {
@@ -25,7 +27,21 @@ export class NotesService {
     return this.notesRepository.findOneBy({ id });
   }
 
-  async remove(id: string): Promise<void> {
-    await this.notesRepository.delete(id);
+  async update(id: string, dto: UpdateNoteDto): Promise<SuccessResponse> {
+    const updateResult = await this.notesRepository.update(id, dto);
+    if (updateResult.affected) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  }
+
+  async remove(id: string): Promise<SuccessResponse> {
+    const deleteResult = await this.notesRepository.delete(id);
+    if (deleteResult.affected) {
+      return { success: true };
+    } else {
+      return { success: false };
+    }
   }
 }

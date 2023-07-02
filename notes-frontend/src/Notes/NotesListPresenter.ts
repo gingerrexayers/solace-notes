@@ -17,7 +17,6 @@ export class NotesListPresenter {
       notesRepository,
       "notesPm",
       (obj) => {
-        console.log(obj);
         self.viewModel = obj.newValue;
       },
       true
