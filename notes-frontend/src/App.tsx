@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import AddNoteComponent from "./Notes/AddNoteComponent";
 import { NotesListComponent } from "./Notes/NotesListComponent";
 

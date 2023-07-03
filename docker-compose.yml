@@ -6,6 +6,7 @@ services:
     build:
       context: ./notes-frontend
       dockerfile: Dockerfile
+      target: development
     env_file:
       - ./notes-frontend/.env
     volumes:
@@ -13,7 +14,8 @@ services:
       - ./notes-frontend/public:/app/public
     restart: always
     ports:
-      - 3001:3000
+      - 3001:3001
+    command: npm run start
   backend:
     container_name: solace-notes-backend
     depends_on:

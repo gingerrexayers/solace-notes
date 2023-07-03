@@ -8,6 +8,8 @@ import { SuccessResponse } from "./dto/SuccessResponse.dto";
 export class NotesRepository {
   notesPm: NoteResponseDto[] = [];
   httpGateway = new HttpGateway();
+  host = process.env.REACT_APP_BACKEND_HOST;
+  port = process.env.REACT_APP_BACKEND_PORT;
 
   constructor() {
     makeObservable(this, {
@@ -24,13 +26,13 @@ export class NotesRepository {
   };
 
   addNote = async (dto: AddNoteDto) => {
-    await this.httpGateway.post("http://localhost:3000/notes", dto);
+    await this.httpGateway.post(`http://${this.host}:${this.port}/notes`, dto);
     await this.loadApiData();
   };
 
   updateNote = async (dto: UpdateNoteDto): Promise<SuccessResponse> => {
     const result = await this.httpGateway.patch(
-      "http://localhost:3000/notes/" + dto.id,
+      `http://${this.host}:${this.port}/notes/` + dto.id,
       dto
     );
     if (result.success) {
@@ -43,7 +45,7 @@ export class NotesRepository {
 
   deleteNote = async (id: string): Promise<SuccessResponse> => {
     const result = await this.httpGateway.delete(
-      "http://localhost:3000/notes/" + id
+      `http://${this.host}:${this.port}/notes/` + id
     );
     if (result.success) {
       this.notesPm = this.notesPm.filter((note) => note.id !== id);
@@ -52,8 +54,9 @@ export class NotesRepository {
   };
 
   loadApiData = async () => {
-    const response = await this.httpGateway.get("http://localhost:3000/notes");
-    console.log(response);
+    const response = await this.httpGateway.get(
+      `http://${this.host}:${this.port}/notes`
+    );
     this.notesPm = response.map((note: NoteResponseDto) => {
       return {
         ...note,
